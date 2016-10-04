@@ -1,0 +1,50 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/***** Create Task Table *****/
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'{databaseOwner}[{objectQualifier}HelloWorld_Tasks]') AND type in (N'U'))
+BEGIN   
+	CREATE TABLE {databaseOwner}[{objectQualifier}HelloWorld_Tasks]
+	(
+		[TaskId] [int] IDENTITY(1,1) NOT NULL,
+		[TaskName] [nvarchar](max) NOT NULL,
+		CONSTRAINT [PK_{objectQualifier}HelloWorld_Tasks] PRIMARY KEY CLUSTERED ([TaskId] ASC)
+	) ON [PRIMARY]
+END
+GO
+
+IF object_id(N'{databaseOwner}{objectQualifier}HelloWorld_CreateTask', 'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}{objectQualifier}HelloWorld_CreateTask
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}HelloWorld_CreateTask]
+	@TaskName nvarchar(MAX)
+AS
+BEGIN
+	INSERT INTO {databaseOwner}{objectQualifier}HelloWorld_Tasks
+           ([TaskName])
+     VALUES
+           (@TaskName)
+
+	SELECT  SCOPE_IDENTITY()
+END
+GO
+
+IF object_id(N'{databaseOwner}{objectQualifier}HelloWorld_GetTasks', 'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}{objectQualifier}HelloWorld_GetTasks
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}HelloWorld_GetTasks]
+AS
+BEGIN
+	SELECT TaskId, TaskName 
+	FROM {databaseOwner}{objectQualifier}HelloWorld_Tasks
+END
+GO

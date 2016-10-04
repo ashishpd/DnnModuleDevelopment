@@ -1,0 +1,21 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+IF EXISTS (SELECT * from dbo.sysobjects where id = object_id(N'{databaseOwner}{objectQualifier}HelloWorld_Tasks') and OBJECTPROPERTY(id, N'IsTable') = 1)
+	DROP TABLE {databaseOwner}{objectQualifier}HelloWorld_Tasks
+GO
+
+IF object_id(N'{databaseOwner}{objectQualifier}HelloWorld_CreateTask', 'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}{objectQualifier}HelloWorld_CreateTask
+GO
+
+IF object_id(N'{databaseOwner}{objectQualifier}HelloWorld_GetTasks', 'P') IS NOT NULL
+	DROP PROCEDURE {databaseOwner}{objectQualifier}HelloWorld_GetTasks
+GO
